@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔐 Ficha Digital Protegida — Vétus</title>
+    <link rel="stylesheet" href="css/ficha-digital.css" />
+    <script src="js/vendor/pdf-lib.min.js" defer></script>
+    <script src="js/ficha-digital.js" defer></script>
+  </head>
+  <body>
+    <div class="pagina-fundo">
+      <div class="container">
+        <header class="header">
+          <img
+            src="image/logo-vetus.png"
+            alt="Vétus Gestão de Acesso"
+            class="logo"
+          />
+          <h1>🔐 Ficha Digital Protegida</h1>
+          <p class="subtitulo">
+            Organize seus e-mails, senhas e dados de recuperação
+          </p>
+        </header>
+
+        <form id="form-ficha">
+          <!-- SEÇÃO DE E-MAILS -->
+          <h2 class="titulo-secao">📧 E-mails</h2>
+          <div id="lista-emails">
+            <!-- E-mail Principal -->
+            <div class="card-email">
+              <div class="card-titulo">
+                <span class="icone">📧</span>
+                <h3 class="titulo-card-editavel" contenteditable="true">
+                  E-mail Principal
+                </h3>
+              </div>
+              <div class="grupo-campo">
+                <label>Endereço de e-mail</label>
+                <input
+                  type="email"
+                  class="email-endereco"
+                  placeholder="exemplo@gmail.com"
+                  onblur="verificarEmails(this)"
+                />
+              </div>
+              <div class="grupo-campo">
+                <label>Senha</label>
+                <input
+                  type="password"
+                  class="email-senha"
+                  placeholder="Sua senha"
+                  autocomplete="new-password"
+                />
+              </div>
+              <div class="grupo-campo">
+                <label>E-mail de recuperação</label>
+                <input
+                  type="email"
+                  class="email-recuperacao"
+                  placeholder="Deve ser diferente do e-mail principal"
+                  onblur="verificarEmails(this)"
+                />
+                <p
+                  class="aviso-email"
+                  style="
+                    color: #dc2626;
+                    font-size: 13px;
+                    margin-top: 5px;
+                    display: none;
+                  "
+                >
+                  ⚠️ Este e-mail não pode ser o mesmo que o e-mail principal
+                </p>
+              </div>
+              <div class="grupo-campo">
+                <label for="telefone">Telefone de recuperação:</label>
+                <input
+                  type="tel"
+                  id="telefone"
+                  class="email-telefone"
+                  oninput="aplicarMascaraTelefone(this)"
+                  placeholder="(XX) XXXXX-XXXX"
+                  maxlength="15"
+                />
+              </div>
+              <div class="grupo-campo">
+                <label>Verificação em duas etapas</label>
+                <select class="email-duas-etapas" aria-label="Verificação em duas etapas ativada?">
+                  <option value="">Selecione...</option>
+                  <option value="sim">Sim</option>
+                  <option value="nao">Não</option>
+                </select>
+                <p
+                  class="aviso-nao"
+                  style="
+                    color: #b45309;
+                    font-size: 13px;
+                    margin-top: 5px;
+                    display: none;
+                  "
+                >
+                  ⚠️ Sem essa proteção, quem descobrir sua senha poderá acessar
+                  sua conta com mais facilidade.
+                </p>
+              </div>
+              <div class="campos-duas-etapas">
+                <div class="grupo-campo">
+                  <label>Método usado</label>
+                  <select class="metodo-duas-etapas" aria-label="Método usado na verificação em duas etapas">
+                    <option value="">Selecione...</option>
+                    <option value="Aplicativo autenticador">Aplicativo autenticador</option>
+                    <option value="SMS">SMS</option>
+                    <option value="Ligação telefônica">Ligação telefônica</option>
+                    <option value="Chave de segurança ou passkey">Chave de segurança ou passkey</option>
+                    <option value="Notificação no dispositivo">Notificação no dispositivo</option>
+                    <option value="Outro">Outro</option>
+                    <option value="Não sei informar">Não sei informar</option>
+                  </select>
+                </div>
+                <div class="grupo-campo">
+                  <p class="aviso-codigos">
+                    Códigos de recuperação são códigos de uso único fornecidos pelo serviço se você perder acesso ao celular. Só inclua se quiser guardá-los no PDF protegido. Não digite o código temporário que muda a cada login.
+                  </p>
+                  <label class="opcao-codigos">
+                    <input type="checkbox" class="incluir-codigos" />
+                    Quero incluir os códigos de recuperação no PDF protegido
+                  </label>
+                  <textarea
+                    class="codigos-recuperacao"
+                    aria-label="Códigos de recuperação, um por linha"
+                    rows="4"
+                    placeholder="Cole aqui os códigos de recuperação, um por linha"
+                    hidden
+                    disabled
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="btn-adicionar-email" class="btn-adicionar">
+            ➕ Adicionar e-mail
+          </button>
+
+          <!-- SEÇÃO DE APLICATIVOS E REDES SOCIAIS -->
+          <h2 class="titulo-secao">📱 Aplicativos e Redes Sociais</h2>
+          <div id="lista-aplicativos">
+            <div class="card-aplicativo">
+              <div class="card-titulo">
+                <span class="icone">📱</span>
+                <h3 class="titulo-card-editavel" contenteditable="true">
+                  Aplicativo
+                </h3>
+              </div>
+              <div class="grupo-campo">
+                <label>Usuário / E-mail</label>
+                <input
+                  type="text"
+                  class="app-usuario"
+                  placeholder="Seu usuário ou e-mail"
+                />
+              </div>
+              <div class="grupo-campo">
+                <label>Senha</label>
+                <input type="password" class="app-senha" placeholder="Sua senha" autocomplete="new-password" />
+              </div>
+              <div class="grupo-campo">
+                <label>E-mail de recuperação (opcional)</label>
+                <input
+                  type="email"
+                  class="app-email-recuperacao"
+                  placeholder="E-mail para recuperação"
+                />
+              </div>
+              <div class="grupo-campo">
+                <label>Telefone de recuperação (opcional)</label>
+                <input
+                  type="tel"
+                  class="app-telefone"
+                  placeholder="(00) 00000-0000"
+                  maxlength="15"
+                />
+              </div>
+              <div class="grupo-campo">
+                <label>Verificação em duas etapas</label>
+                <select class="app-duas-etapas" aria-label="Verificação em duas etapas ativada?">
+                  <option value="">Selecione...</option>
+                  <option value="sim">Sim</option>
+                  <option value="nao">Não</option>
+                </select>
+                <p
+                  class="aviso-nao"
+                  style="
+                    color: #b45309;
+                    font-size: 13px;
+                    margin-top: 5px;
+                    display: none;
+                  "
+                >
+                  ⚠️ Sem essa proteção, quem descobrir sua senha poderá acessar
+                  sua conta com mais facilidade.
+                </p>
+              </div>
+              <div class="campos-duas-etapas">
+                <div class="grupo-campo">
+                  <label>Método usado</label>
+                  <select class="metodo-duas-etapas" aria-label="Método usado na verificação em duas etapas">
+                    <option value="">Selecione...</option>
+                    <option value="Aplicativo autenticador">Aplicativo autenticador</option>
+                    <option value="SMS">SMS</option>
+                    <option value="Ligação telefônica">Ligação telefônica</option>
+                    <option value="Chave de segurança ou passkey">Chave de segurança ou passkey</option>
+                    <option value="Notificação no dispositivo">Notificação no dispositivo</option>
+                    <option value="Outro">Outro</option>
+                    <option value="Não sei informar">Não sei informar</option>
+                  </select>
+                </div>
+                <div class="grupo-campo">
+                  <p class="aviso-codigos">
+                    Códigos de recuperação são códigos de uso único fornecidos pelo serviço se você perder acesso ao celular. Só inclua se quiser guardá-los no PDF protegido. Não digite o código temporário que muda a cada login.
+                  </p>
+                  <label class="opcao-codigos">
+                    <input type="checkbox" class="incluir-codigos" />
+                    Quero incluir os códigos de recuperação no PDF protegido
+                  </label>
+                  <textarea
+                    class="codigos-recuperacao"
+                    aria-label="Códigos de recuperação, um por linha"
+                    rows="4"
+                    placeholder="Cole aqui os códigos de recuperação, um por linha"
+                    hidden
+                    disabled
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="btn-adicionar-app" class="btn-adicionar">
+            ➕ Adicionar aplicativo / rede social
+          </button>
+
+          <div class="aviso-importante">
+            <p>
+              <strong>⚠️ Aviso importante:</strong> Nenhum dado é salvo neste
+              site. Se a página for recarregada ou houver queda de internet,
+              todos os campos serão apagados. Guarde seu PDF em local seguro
+              após o download.
+            </p>
+            <p>
+              <strong>⚠️ Isenção de responsabilidade:</strong> Após o download
+              do arquivo, a guarda, o acesso e a segurança dos dados contidos no
+              PDF são de total responsabilidade do cliente.
+            </p>
+          </div>
+
+          <div class="bloco-senha">
+            <h2>🔒 Defina a senha do PDF</h2>
+            <input
+              type="password"
+              id="senha-pdf"
+              placeholder="Crie uma senha com pelo menos 8 caracteres"
+              minlength="8"
+              required
+            />
+          </div>
+
+          <button type="button" id="btn-gerar-pdf" class="btn-gerar">
+            📄 Gerar e Baixar PDF Protegido
+          </button>
+          <section
+            id="aviso-download"
+            class="aviso-importante aviso-download"
+            role="status"
+            tabindex="-1"
+            hidden
+          >
+            <h3>PDF baixado: Ficha-Digital-Vetus.pdf</h3>
+            <p>
+              <strong>No computador:</strong> abra a pasta Downloads e procure
+              pelo arquivo com esse nome.
+            </p>
+            <p>
+              <strong>No celular:</strong> procure em Arquivos ou Gerenciador de
+              arquivos → Downloads. Também pode abrir a lista de downloads do
+              navegador.
+            </p>
+            <p>
+              Se o navegador perguntar onde salvar, escolha uma pasta fácil de
+              encontrar. Anote a senha do PDF em outro lugar seguro. Para
+              imprimir, abra o PDF, digite a senha e escolha Imprimir; guarde a
+              cópia impressa em local protegido.
+            </p>
+          </section>
+        </form>
+      </div>
+    </div>
+
+  </body>
+</html>
