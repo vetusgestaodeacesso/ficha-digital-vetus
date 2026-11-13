@@ -28,8 +28,9 @@ body {
 }
 
 .logo {
-    max-width: 90px;
+    max-width: 200px;
     margin-bottom: 15px;
+    border-radius: 8%;
 }
 
 .header h1 {
